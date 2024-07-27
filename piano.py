@@ -1,5 +1,4 @@
 import pygame
-import os
 import sys
 
 # Initialize pygame
@@ -21,7 +20,7 @@ key_map = {
 sounds = {key: pygame.mixer.Sound(f'generated_sounds/{file}') for key, file in key_map.items()}
 
 # Set up the display
-screen = pygame.display.set_mode((600, 600))
+screen = pygame.display.set_mode((500, 200))
 pygame.display.set_caption("Virtual Piano")
 
 def main():
@@ -43,14 +42,8 @@ def main():
         # Display instructions
         font = pygame.font.Font(None, 36)
         instructions = [
-            "Press keys A, S, D, F, G, H, J, K to play notes",
-            "Twinkle Twinkle Little Star:",
-            "A A G G H H G",
-            "F F D D S S A",
-            "G G F F D D S",
-            "G G F F D D S",
-            "A A G G H H G",
-            "F F D D S S A"
+            "Press keys A, S, D, F, G, H, J, K",
+            "to play notes C D E F G A B C_high"
         ]
         
         y = 50
