@@ -16,7 +16,7 @@ def read_file(file_path):
     except Exception as e:
         return f"Error reading file: {e}"
 
-def display_piano_chords():
+def display_chords():
     """Creates a window to display the piano chords."""
     # Create the main window
     window = tk.Tk()
@@ -39,4 +39,4 @@ def display_piano_chords():
     window.mainloop()
 
 if __name__ == "__main__":
-    display_piano_chords()
+    display_chords()

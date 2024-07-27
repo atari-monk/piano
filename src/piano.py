@@ -27,28 +27,30 @@ pygame.display.set_caption("Virtual Piano")
 # Initialize recorder
 recorder = Recorder()
 
-def main():
-    global recorder
+def handle_key_events(event):
+    """Handle key events for playing sounds and recording."""
+    if event.key in sounds:
+        sounds[event.key].play()
+        recorder.record_key_press(event.key)
+    elif event.key == pygame.K_r:  # Press 'r' to start/stop recording
+        if recorder.is_recording:
+            recorder.stop_recording()
+            recorder.save_recording('data/recording.json')
+        else:
+            recorder.start_recording()
+    elif event.key == pygame.K_p:  # Press 'p' to play the recording
+        if not recorder.is_recording:
+            loaded_recording = recorder.load_recording('data/recording.json')
+            recorder.play_recording(loaded_recording, sounds)
 
+def main():
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                if event.key in sounds:
-                    sounds[event.key].play()
-                    recorder.record_key_press(event.key)
-                elif event.key == pygame.K_r:  # Press 'r' to start/stop recording
-                    if recorder.is_recording:
-                        recorder.stop_recording()
-                        recorder.save_recording('data/recording.json')
-                    else:
-                        recorder.start_recording()
-                elif event.key == pygame.K_p:  # Press 'p' to play the recording
-                    if not recorder.is_recording:
-                        loaded_recording = recorder.load_recording('data/recording.json')
-                        recorder.play_recording(loaded_recording, sounds)
+                handle_key_events(event)
             elif event.type == pygame.KEYUP:
                 if event.key in sounds:
                     sounds[event.key].stop()
