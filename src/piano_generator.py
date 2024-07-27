@@ -21,9 +21,9 @@ frequencies = {
 }
 
 # Generate and save the sound files if not already present
-os.makedirs('generated_sounds', exist_ok=True)
+os.makedirs('data/generated_sounds', exist_ok=True)
 for note, freq in frequencies.items():
-    filename = f'generated_sounds/{note}.wav'
+    filename = f'data/generated_sounds/{note}.wav'
     if not os.path.exists(filename):
         wave = generate_sine_wave(freq, 1.0)  # 1 second duration
         write(filename, 44100, wave)

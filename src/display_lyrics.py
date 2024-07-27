@@ -4,7 +4,7 @@ from tkinter import font
 import os
 
 # Define the path to the lyrics file
-folder_path = 'twinkle_twinkle_little_star'
+folder_path = 'data/twinkle_twinkle_little_star'
 file_name = 'lyrics.txt'
 file_path = os.path.join(folder_path, file_name)
 
@@ -23,7 +23,7 @@ def display_lyrics():
     window.title("Lyrics Display")
 
     # Create a scrolled text widget with a custom font
-    text_area = scrolledtext.ScrolledText(window, wrap=tk.WORD, width=50, height=20)
+    text_area = scrolledtext.ScrolledText(window, wrap=tk.WORD, width=35, height=40)
     
     # Set font size and type
     custom_font = font.Font(family="Helvetica", size=16)  # You can change the size here

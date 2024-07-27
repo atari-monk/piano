@@ -4,7 +4,7 @@ from tkinter import font
 import os
 
 # Define the path to the piano chords file
-folder_path = 'twinkle_twinkle_little_star'
+folder_path = 'data/twinkle_twinkle_little_star'
 file_name = 'chords.txt'
 file_path = os.path.join(folder_path, file_name)
 
@@ -20,10 +20,10 @@ def display_piano_chords():
     """Creates a window to display the piano chords."""
     # Create the main window
     window = tk.Tk()
-    window.title("Piano Chords Display")
+    window.title("Chords Display")
 
     # Create a scrolled text widget with a custom font
-    text_area = scrolledtext.ScrolledText(window, wrap=tk.WORD, width=60, height=25)
+    text_area = scrolledtext.ScrolledText(window, wrap=tk.WORD, width=23, height=8)
     
     # Set font size and type
     custom_font = font.Font(family="Helvetica", size=24)  # Change the size here
