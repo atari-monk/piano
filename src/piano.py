@@ -1,24 +1,27 @@
 import pygame
 import sys
+import json
 from recorder import Recorder
 
 # Initialize pygame
 pygame.init()
 
-# Define key mappings
-key_map = {
-    pygame.K_a: "C.wav",
-    pygame.K_s: "D.wav",
-    pygame.K_d: "E.wav",
-    pygame.K_f: "F.wav",
-    pygame.K_g: "G.wav",
-    pygame.K_h: "A.wav",
-    pygame.K_j: "B.wav",
-    pygame.K_k: "C_high.wav"
-}
+# Load configuration
+with open('C:\\atari-monk\\code\\piano\\data\\piano_config.json', 'r') as f:
+    config = json.load(f)
 
-# Load sounds
-sounds = {key: pygame.mixer.Sound(f'data/generated_sounds/{file}') for key, file in key_map.items()}
+# Initialize variables
+current_set_index = 1
+current_set = config['sets'][current_set_index]
+key_map = current_set['key_map']
+sound_path = current_set['path']
+instructions = current_set['instructions']
+
+# Function to load sounds based on the current key map
+def load_sounds(key_map, path):
+    return {getattr(pygame, key): pygame.mixer.Sound(f'{path}\\{file}') for key, file in key_map.items()}
+
+sounds = load_sounds(key_map, sound_path)
 
 # Set up the display
 screen = pygame.display.set_mode((500, 200))
@@ -29,19 +32,27 @@ recorder = Recorder()
 
 def handle_key_events(event):
     """Handle key events for playing sounds and recording."""
+    global current_set_index, sounds, current_set, key_map, sound_path, instructions  # Move this line to the top of the function
     if event.key in sounds:
         sounds[event.key].play()
         recorder.record_key_press(event.key)
     elif event.key == pygame.K_r:  # Press 'r' to start/stop recording
         if recorder.is_recording:
             recorder.stop_recording()
-            recorder.save_recording('data/recording.json')
+            recorder.save_recording('C:\\atari-monk\\code\\piano\\data\\recording.json')
         else:
             recorder.start_recording()
     elif event.key == pygame.K_p:  # Press 'p' to play the recording
         if not recorder.is_recording:
-            loaded_recording = recorder.load_recording('data/recording.json')
+            loaded_recording = recorder.load_recording('C:\\atari-monk\\code\\piano\\data\\recording.json')
             recorder.play_recording(loaded_recording, sounds)
+    elif event.key == pygame.K_n:  # Press 'n' to switch to the next set of notes
+        current_set_index = (current_set_index + 1) % len(config['sets'])
+        current_set = config['sets'][current_set_index]
+        key_map = current_set['key_map']
+        sound_path = current_set['path']
+        instructions = current_set['instructions']
+        sounds = load_sounds(key_map, sound_path)
 
 def main():
     while True:
@@ -61,14 +72,15 @@ def main():
 
         # Display instructions
         font = pygame.font.Font(None, 36)
-        instructions = [
-            "Press keys A, S, D, F, G, H, J, K to play notes C D E F G A B C_high",
+        lines = [
+            instructions,
             "Press 'r' to start/stop recording",
-            "Press 'p' to play the recording"
+            "Press 'p' to play the recording",
+            "Press 'n' to switch to the next set of notes"
         ]
 
         y = 50
-        for line in instructions:
+        for line in lines:
             text = font.render(line, True, (0, 0, 0))
             screen.blit(text, (20, y))
             y += 40
