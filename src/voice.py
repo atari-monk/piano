@@ -47,7 +47,7 @@ How I wonder what you are!
 """
 
 # Adjust the properties for a more natural sound
-engine.setProperty('rate', 70)    # Speed of speech
+engine.setProperty('rate', 150)    # Speed of speech
 engine.setProperty('volume', 0.2)  # Volume (0.0 to 1.0)
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[0].id)  # Change index to choose a different voice
